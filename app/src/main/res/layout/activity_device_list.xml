@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+
     tools:context="com.example.franciszeeek.wirelessfalldetector.DeviceList">
 
     <TextView
@@ -17,8 +18,10 @@
 
     <Button
         android:id="@+id/btnSearchDevices"
-        android:layout_width="match_parent"
+        android:layout_width="355dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorButton"
+        android:textColor="@color/colorTextButton"
         android:text="search for devices" />
 
     <ListView
