@@ -17,6 +17,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE;
+
 public class DeviceList extends AppCompatActivity {
 
     @BindView(R.id.listViewDevices)
@@ -30,6 +32,7 @@ public class DeviceList extends AppCompatActivity {
     private BluetoothAdapter myBluetooth = null;
     private Set<BluetoothDevice> pairedDevices;
     public static String EXTRA_ADDRESS = "device_address";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,7 @@ public class DeviceList extends AppCompatActivity {
         }
         else if(!myBluetooth.isEnabled()) // Włącz bluetooth
         {
-            Intent turnBTon = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            Intent turnBTon = new Intent(ACTION_REQUEST_ENABLE);
             startActivityForResult(turnBTon, 1);
         }
 
@@ -81,14 +84,12 @@ public class DeviceList extends AppCompatActivity {
     {
         public void onItemClick (AdapterView<?> av, View v, int arg2, long arg3)
         {
-            // Uzyskaj adres MAC urządzenia, ostatnie 17 znaków w widoku
             String info = ((TextView) v).getText().toString();
             String address = info.substring(info.length() - 17);
-            // Zrób intencję rozpoczęcia następnej aktywności.
             Intent intent = new Intent(DeviceList.this, MainActivity.class);
-            // Zmień aktywność
-            intent.putExtra(EXTRA_ADDRESS, address); // Odebranie danych w aktywności
+            intent.putExtra(EXTRA_ADDRESS, address);
             startActivity(intent);
         }
     };
 }
+

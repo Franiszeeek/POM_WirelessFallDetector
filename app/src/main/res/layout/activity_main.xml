@@ -61,7 +61,7 @@
             android:layout_width="150dp"
             android:layout_height="100dp"
             android:backgroundTint="@color/colorButton"
-            android:text="functionality 4"
+            android:text="Read"
             android:textColor="@color/colorTextButton"
             android:layout_marginLeft="20dp"/>
     </LinearLayout>
