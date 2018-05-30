@@ -10,6 +10,15 @@
     tools:context="com.example.franciszeeek.wirelessfalldetector.MainActivity">
 
     <TextView
+        android:id="@+id/data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="data"
+        android:textColor="@color/colorTextButton"
+        android:textAlignment="center"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"/>
+    <TextView
         android:id="@+id/dataValue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

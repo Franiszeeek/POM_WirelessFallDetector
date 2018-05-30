@@ -17,8 +17,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE;
-
 public class DeviceList extends AppCompatActivity {
 
     @BindView(R.id.listViewDevices)
@@ -29,10 +27,9 @@ public class DeviceList extends AppCompatActivity {
         pairedDevicesList();
     }
 
-    private BluetoothAdapter myBluetooth = null;
+    private BluetoothAdapter mBluetoothAdapter = null;
     private Set<BluetoothDevice> pairedDevices;
     public static String EXTRA_ADDRESS = "device_address";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,46 +37,33 @@ public class DeviceList extends AppCompatActivity {
         setContentView(R.layout.activity_device_list);
         ButterKnife.bind(this);
 
-        // Przypisanie bluetooth urządzenia
-        myBluetooth = BluetoothAdapter.getDefaultAdapter();
-
-        // Wiadomość kiedy urządzenie nie ma bluetooth, zamknięcie aplikacji
-        if(myBluetooth == null)
-        {
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter == null) {
             Toast.makeText(getApplicationContext(), "Bluetooth Device Not Available", Toast.LENGTH_LONG).show();
             finish();
         }
-        else if(!myBluetooth.isEnabled()) // Włącz bluetooth
-        {
-            Intent turnBTon = new Intent(ACTION_REQUEST_ENABLE);
-            startActivityForResult(turnBTon, 1);
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, 1);
         }
-
     }
-
     private void pairedDevicesList()
     {
-        pairedDevices = myBluetooth.getBondedDevices();
+        pairedDevices = mBluetoothAdapter.getBondedDevices();
         ArrayList list = new ArrayList();
-
-        if (pairedDevices.size()>0)
-        {
-            for(BluetoothDevice bt : pairedDevices)
-            {
-                // Uzyskanie nazwę urządzenia i adres
-                list.add(bt.getName() + "\n" + bt.getAddress());
+        if (pairedDevices.size() > 0) {
+            for (BluetoothDevice device : pairedDevices) {
+                String deviceName = device.getName();
+                String deviceHardwareAddress = device.getAddress();
+                list.add(deviceName + "\n" + deviceHardwareAddress);
             }
-        }
-        else
-        {
+        } else {
             Toast.makeText(getApplicationContext(), "No Paired Bluetooth Devices Found.", Toast.LENGTH_LONG).show();
         }
-
         final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, list);
         listViewDevices.setAdapter(adapter);
-        listViewDevices.setOnItemClickListener(myListClickListener); // Metoda wywoływana po kliknięciu urządzenia z listy
+        listViewDevices.setOnItemClickListener(myListClickListener);
     }
-
     private AdapterView.OnItemClickListener myListClickListener = new AdapterView.OnItemClickListener()
     {
         public void onItemClick (AdapterView<?> av, View v, int arg2, long arg3)
@@ -92,4 +76,3 @@ public class DeviceList extends AppCompatActivity {
         }
     };
 }
-
